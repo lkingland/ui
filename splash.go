@@ -15,27 +15,15 @@ const (
 // Splash is a simplistic splashscreen with minimal configuraiton,
 // suitable as a placeholder for new web locations.
 type Splash struct {
-	title    string
-	desc     string
-	keywords string
+	*Document
 	copyYear int
 	version  string
 }
 
 func NewSplash() *Splash {
-	return &Splash{}
-}
-
-func (s *Splash) SetTitle(text string) {
-	s.title = text
-}
-
-func (s *Splash) SetDesc(text string) {
-	s.desc = text
-}
-
-func (s *Splash) SetKeywords(text string) {
-	s.keywords = text
+	return &Splash{
+		Document: NewDocument(), // Inherit defaults
+	}
 }
 
 func (s *Splash) SetCopyrightYear(year int) {
@@ -50,22 +38,13 @@ func (s *Splash) copyrightNotice() string {
 	return fmt.Sprintf("&copy; %d - %d", s.copyYear, time.Now().Year())
 }
 
-func (s *Splash) Bytes() []byte {
-	root := Root().
-		Add(Doctype()).
-		Add(Html().Set("lang", "en").
-			Add(Head().
-				Add(Title().Add(C(s.title))).
-				Add(Base().Set("href", "/")).
-				Add(Meta().Set("charset", "UTF-8")).
-				Add(Meta().Set("viewport", "width=device-width, initial-scale=1")).
-				Add(Link().Set("type", "text/css").Set("rel", "stylesheet").Set("href", "/css/splash.css")).
-				Add(Script().Set("type", "text/javascript").Set("src", "/js/splash.js"))).
-			Add(Body().
-				Add(Img().Set("src", DefaultBanner)).
-				Add(Img().Set("src", DefaultLogo)).
-				Add(Div().Add(C(s.copyrightNotice()))).
-				Add(Div().Add(C(s.version)))))
+func (s *Splash) Render(i int) string {
+	s.Document.
+		Add(Img().Set("src", DefaultBanner).Set("class", "banner")).
+		Add(Img().Set("src", DefaultLogo).Set("class", "logo").
+			Set("width", "300").Set("height", "60")).
+		Add(Div().Set("class", "copyright").Add(C(s.copyrightNotice()))).
+		Add(Div().Set("class", "version").Add(C(s.version)))
 
-	return []byte(root.Render(0))
+	return s.Document.Render(i)
 }
