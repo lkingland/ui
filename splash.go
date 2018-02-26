@@ -2,7 +2,6 @@ package ui
 
 import (
 	"fmt"
-	"strconv"
 	"time"
 
 	. "kingland.io/html"
@@ -11,8 +10,8 @@ import (
 const (
 	DefaultBanner     = "/img/splash.jpg"
 	DefaultLogo       = "/img/logo.png"
-	DefaultLogoWidth  = "auto"
-	DefaultLogoHeight = "auto"
+	DefaultLogoWidth  = -1
+	DefaultLogoHeight = -1
 )
 
 // Splash is a simplistic splashscreen with minimal configuraiton,
@@ -21,13 +20,19 @@ type Splash struct {
 	*Document
 	copyYear   int
 	version    string
+	banner     string
+	logo       string
 	logoWidth  int
 	logoHeight int
 }
 
 func NewSplash() *Splash {
 	return &Splash{
-		Document: NewDocument(), // Inherit defaults
+		banner:     DefaultBanner,
+		logo:       DefaultLogo,
+		logoWidth:  DefaultLogoWidth,
+		logoHeight: DefaultLogoHeight,
+		Document:   NewDocument(), // Inherit defaults
 	}
 }
 
@@ -55,7 +60,7 @@ func (s *Splash) Render(i int) string {
 	s.Document.
 		Add(Img().Set("src", DefaultBanner).Set("class", "banner")).
 		Add(Img().Set("src", DefaultLogo).Set("class", "logo").
-			Set("width", strconv.Itoa(s.logoWidth)).Set("height", strconv.Itoa(s.logoHeight))).
+			Set("width", px(s.logoWidth)).Set("height", px(s.logoHeight))).
 		Add(Div().Set("class", "copyright").Add(C(s.copyrightNotice()))).
 		Add(Div().Set("class", "version").Add(C(s.version)))
 

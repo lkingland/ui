@@ -81,6 +81,8 @@ func (s *Document) Render(i int) string {
 				Add(Base().Set("href", "/")).
 				Add(Meta().Set("charset", "UTF-8")).
 				Add(Meta().Set("viewport", "width=device-width, initial-scale=1")).
+				Add(Meta().Set("description", s.desc)).
+				Add(Meta().Set("keywords", s.keywords)).
 				Add(Link().Set("type", "text/css").Set("rel", "stylesheet").Set("href", s.style)).
 				Add(Script().Set("type", "text/javascript").Set("src", s.script))).
 			Add(Body().Set("id", s.id).
