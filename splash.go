@@ -10,8 +10,8 @@ import (
 const (
 	DefaultBanner     = "/img/splash.jpg"
 	DefaultLogo       = "/img/logo.png"
-	DefaultLogoWidth  = -1
-	DefaultLogoHeight = -1
+	DefaultLogoWidth  = "auto"
+	DefaultLogoHeight = "auto"
 )
 
 // Splash is a simplistic splashscreen with minimal configuraiton,
@@ -22,8 +22,8 @@ type Splash struct {
 	version    string
 	banner     string
 	logo       string
-	logoWidth  int
-	logoHeight int
+	logoWidth  string
+	logoHeight string
 }
 
 func NewSplash() *Splash {
@@ -36,11 +36,11 @@ func NewSplash() *Splash {
 	}
 }
 
-func (s *Splash) SetLogoWidth(width int) {
+func (s *Splash) SetLogoWidth(width string) {
 	s.logoWidth = width
 }
 
-func (s *Splash) SetLogoHeight(height int) {
+func (s *Splash) SetLogoHeight(height string) {
 	s.logoHeight = height
 }
 
@@ -60,7 +60,7 @@ func (s *Splash) Render(i int) string {
 	s.Document.
 		Add(Img().Set("src", DefaultBanner).Set("class", "banner")).
 		Add(Img().Set("src", DefaultLogo).Set("class", "logo").
-			Set("width", px(s.logoWidth)).Set("height", px(s.logoHeight))).
+			Set("width", s.logoWidth).Set("height", s.logoHeight)).
 		Add(Div().Set("class", "copyright").Add(C(s.copyrightNotice()))).
 		Add(Div().Set("class", "version").Add(C(s.version)))
 
