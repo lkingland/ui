@@ -2,6 +2,7 @@ package ui
 
 import (
 	"fmt"
+	"strconv"
 	"time"
 
 	. "kingland.io/html"
@@ -54,7 +55,7 @@ func (s *Splash) Render(i int) string {
 	s.Document.
 		Add(Img().Set("src", DefaultBanner).Set("class", "banner")).
 		Add(Img().Set("src", DefaultLogo).Set("class", "logo").
-			Set("width", string(s.logoWidth)).Set("height", string(s.logoHeight))).
+			Set("width", strconv.Itoa(s.logoWidth)).Set("height", strconv.Itoa(s.logoHeight))).
 		Add(Div().Set("class", "copyright").Add(C(s.copyrightNotice()))).
 		Add(Div().Set("class", "version").Add(C(s.version)))
 
