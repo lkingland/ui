@@ -1,8 +1,6 @@
 package ui
 
-import (
-	. "kingland.io/html"
-)
+import "kingland.io/html"
 
 const (
 	DefaultStyle    = "/css/index.css"
@@ -26,7 +24,7 @@ type Document struct {
 	script   string
 	language string
 
-	children []Renderable
+	children []html.Renderable
 }
 
 func NewDocument() *Document {
@@ -67,25 +65,25 @@ func (s *Document) SetScript(script string) *Document {
 	return s
 }
 
-func (s *Document) Add(r ...Renderable) *Document {
+func (s *Document) Add(r ...html.Renderable) *Document {
 	s.children = append(s.children, r...)
 	return s
 }
 
 func (s *Document) Render(i int) string {
-	root := Root().
-		Add(Doctype()).
-		Add(Html().Set("lang", s.language).
-			Add(Head().
-				Add(Title().Add(C(s.title))).
-				Add(Base().Set("href", "/")).
-				Add(Meta().Set("charset", "UTF-8")).
-				Add(Meta().Set("viewport", "width=device-width, initial-scale=1")).
-				Add(Meta().Set("description", s.desc)).
-				Add(Meta().Set("keywords", s.keywords)).
-				Add(Link().Set("type", "text/css").Set("rel", "stylesheet").Set("href", s.style)).
-				Add(Script().Set("type", "text/javascript").Set("src", s.script))).
-			Add(Body().Set("id", s.id).
+	root := html.Root().
+		Add(html.Doctype()).
+		Add(html.Html().Set("lang", s.language).
+			Add(html.Head().
+				Add(html.Title().Add(html.C(s.title))).
+				Add(html.Base().Set("href", "/")).
+				Add(html.Meta().Set("charset", "UTF-8")).
+				Add(html.Meta().Set("viewport", "width=device-width, initial-scale=1")).
+				Add(html.Meta().Set("description", s.desc)).
+				Add(html.Meta().Set("keywords", s.keywords)).
+				Add(html.Link().Set("type", "text/css").Set("rel", "stylesheet").Set("href", s.style)).
+				Add(html.Script().Set("type", "text/javascript").Set("src", s.script))).
+			Add(html.Body().Set("id", s.id).
 				Add(s.children...)))
 
 	return root.Render(i)

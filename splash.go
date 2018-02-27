@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	. "kingland.io/html"
+	"kingland.io/html"
 )
 
 const (
@@ -18,12 +18,13 @@ const (
 // suitable as a placeholder for new web locations.
 type Splash struct {
 	*Document
-	copyYear   int
-	version    string
-	banner     string
-	logo       string
-	logoWidth  string
-	logoHeight string
+	copyYear    int
+	version     string
+	banner      string
+	logo        string
+	logoWidth   string
+	logoHeight  string
+	disableLogo bool
 }
 
 func NewSplash() *Splash {
@@ -34,6 +35,10 @@ func NewSplash() *Splash {
 		logoHeight: DefaultLogoHeight,
 		Document:   NewDocument(), // Inherit defaults
 	}
+}
+
+func (s *Splash) SetDisableLogo(disable bool) {
+	s.disableLogo = disable
 }
 
 func (s *Splash) SetLogoWidth(width string) {
@@ -58,11 +63,14 @@ func (s *Splash) copyrightNotice() string {
 
 func (s *Splash) Render(i int) string {
 	s.Document.
-		Add(Img().Set("src", DefaultBanner).Set("class", "banner")).
-		Add(Img().Set("src", DefaultLogo).Set("class", "logo").
-			Set("width", s.logoWidth).Set("height", s.logoHeight)).
-		Add(Div().Set("class", "copyright").Add(C(s.copyrightNotice()))).
-		Add(Div().Set("class", "version").Add(C(s.version)))
+		Add(html.Img().Set("src", DefaultBanner).Set("class", "banner"))
+	if !s.disableLogo {
+		s.Document.Add(html.Img().Set("src", DefaultLogo).Set("class", "logo").
+			Set("width", s.logoWidth).Set("height", s.logoHeight))
+	}
+	s.Document.
+		Add(html.Div().Set("class", "copyright").Add(html.C(s.copyrightNotice()))).
+		Add(html.Div().Set("class", "version").Add(html.C(s.version)))
 
 	return s.Document.Render(i)
 }
