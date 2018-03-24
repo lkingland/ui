@@ -24,6 +24,7 @@ type Document struct {
 	script   string
 	language string
 
+	scripts  []string
 	children []html.Renderable
 }
 
@@ -65,6 +66,11 @@ func (s *Document) SetScript(script string) *Document {
 	return s
 }
 
+func (s *Document) AddScript(path ...string) *Document {
+	s.scripts = append(s.scripts, path...)
+	return s
+}
+
 func (s *Document) Add(r ...html.Renderable) *Document {
 	s.children = append(s.children, r...)
 	return s
@@ -82,9 +88,20 @@ func (s *Document) Render(i int) string {
 				Add(html.Meta().Set("description", s.desc)).
 				Add(html.Meta().Set("keywords", s.keywords)).
 				Add(html.Link().Set("type", "text/css").Set("rel", "stylesheet").Set("href", s.style)).
-				Add(html.Script().Set("type", "text/javascript").Set("src", s.script))).
+				Add(s.scriptTags()...)).
 			Add(html.Body().Set("id", s.id).
 				Add(s.children...)))
 
 	return root.Render(i)
+}
+
+func (s *Document) scriptTags() []html.Renderable {
+	tags := []html.Renderable{}
+	if s.script != "" {
+		tags = append(tags, html.Script().Set("type", "text/javascript").Set("src", s.script))
+	}
+	for _, path := range s.scripts {
+		tags = append(tags, html.Script().Set("type", "text/javascript").Set("src", path))
+	}
+	return tags
 }
