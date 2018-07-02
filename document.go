@@ -4,7 +4,6 @@ import "kingland.io/html"
 
 const (
 	DefaultStyle    = "/css/index.css"
-	DefaultScript   = "/js/index.js"
 	DefaultLanguage = "en"
 )
 
@@ -31,7 +30,6 @@ type Document struct {
 func NewDocument() *Document {
 	return &Document{
 		style:    DefaultStyle,
-		script:   DefaultScript,
 		language: DefaultLanguage,
 	}
 }
