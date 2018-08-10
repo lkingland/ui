@@ -24,6 +24,7 @@ type Document struct {
 	language string
 
 	scripts  []string
+	headers  []html.Renderable
 	children []html.Renderable
 }
 
@@ -64,6 +65,11 @@ func (s *Document) SetScript(script string) *Document {
 	return s
 }
 
+func (s *Document) AddHeader(h ...html.Renderable) *Document {
+	s.headers = append(s.headers, h...)
+	return s
+}
+
 func (s *Document) AddScript(path ...string) *Document {
 	s.scripts = append(s.scripts, path...)
 	return s
@@ -85,6 +91,7 @@ func (s *Document) Render(i int) string {
 				Add(html.Meta().Set("viewport", "width=device-width, initial-scale=1")).
 				Add(html.Meta().Set("description", s.desc)).
 				Add(html.Meta().Set("keywords", s.keywords)).
+				Add(s.headers...).
 				Add(html.Link().Set("type", "text/css").Set("rel", "stylesheet").Set("href", s.style)).
 				Add(s.scriptTags()...)).
 			Add(html.Body().Set("id", s.id).
