@@ -1,6 +1,6 @@
 package ui
 
-import "kingland.io/html"
+import "github.com/lkingland/html"
 
 type Div struct {
 	*html.DIV

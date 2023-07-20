@@ -1,6 +1,6 @@
 package ui
 
-import "kingland.io/html"
+import "github.com/lkingland/html"
 
 type Text struct {
 	html.C

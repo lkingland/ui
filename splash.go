@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"kingland.io/html"
+	"github.com/lkingland/html"
 )
 
 const (

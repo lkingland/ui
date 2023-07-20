@@ -1,6 +1,6 @@
 package ui
 
-import "kingland.io/html"
+import "github.com/lkingland/html"
 
 const (
 	DefaultStyle    = "/css/index.css"
